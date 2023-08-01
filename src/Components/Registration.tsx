@@ -20,10 +20,8 @@ const Registration = ():JSX.Element => {
     
   return (
     <div>
-      <form>
         <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)}></input>
-        <input type="submit" onClick={handleSubmit}></input>
-      </form>
+        <button className={styles.button} onClick={handleSubmit}>Get Contract</button>
         <button className={styles.button} onClick={handleRegestration}>Participate</button>
     </div>
   )
