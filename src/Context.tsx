@@ -1,8 +1,6 @@
 import React, {FC,useEffect,useContext,useState, ReactNode, useCallback } from "react";
-import lotteryAbi from './configs/lotteryAbi.json'
 import {ContractInterface, ethers} from 'ethers'
 import getProvider from "./services/getProvider";
-import getContract from "./services/getContract";
 
 type Props = {
     children: ReactNode
