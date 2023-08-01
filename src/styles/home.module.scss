@@ -1,38 +1,64 @@
-div{
-    .div{
-        display:flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
 
-        .config{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            min-width: 40%;
-            min-height: 50vh;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 40px 33px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1);
-
-            .button {
-                    background-color: #1dec12;
-                    color: #fff;
-                    border: none;
-                    border-radius: 0.25rem;
-                    padding: 0.5rem 1rem;
-                    cursor: pointer;
-                    margin: 20px;
-                    transition: background-color 0.2s ease-in-out;
-                  
-                &:hover {
-                    background-color: #5bcc2f;
-                }
-            }
-        
-
+    .contractButton{
+        margin: 10px;
+        background-color: #d6010f;
+        color: #fff;
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      
+        &:hover {
+          background-color: #8c0210;
         }
+    }
+    .participantList{
+        margin: 10px;
+        background-color: rgb(103, 102, 102);
+        border-radius: 5px;
+        text-align: center;
+        min-height: 50vh;
+        min-width: 80vw;
+        color: white;
+
+        ul{
+            color: rgb(185, 185, 227);
+        }
+    }
+    .register{
+        
+        margin: 10px;
+    background-color: #4dff00;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  
+    &:hover {
+      background-color: #27b300;
+    }
+    }
+    .pick{
+        margin: 10px;
+    background-color: #4dff00;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  
+    &:hover {
+      background-color: #27b300;
+    }
     }
 }

@@ -6,9 +6,8 @@ const participate = async(contract:ethers.Contract, signer:ethers.Signer):Promis
             value: ethers.utils.parseEther('0.0002'),
           });
         await signer.sendTransaction(transaction);
-    } catch(err:any){
-        if(err?.event==='Error') console.log(err.message);
-        else console.log(err)
+    } catch(err){
+        console.log(err);
     }
 }
 

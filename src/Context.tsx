@@ -1,6 +1,7 @@
 import React, {FC,useEffect,useContext,useState, ReactNode, useCallback } from "react";
-import {ContractInterface, ethers} from 'ethers'
+import {ethers} from 'ethers'
 import getProvider from "./services/getProvider";
+import lotteryAbi from './configs/lotteryAbi.json'
 
 type Props = {
     children: ReactNode
@@ -22,19 +23,13 @@ const Provider : FC<Props>  = ({ children })=> {
   const [owner,setOwner] = useState<string>("");
   const [list,setList] = useState<Array<string>>([]);
 
-  
 
-  // const reset = () => {
-  //   setProvider(undefined);
-    
-  // }
-
-  const connect = async() : Promise<any> =>{
+  const connect = useCallback(async() : Promise<void> =>{
       try{
-        let _provider = await getProvider()
+        const _provider = await getProvider()
       if(_provider instanceof ethers.providers.Web3Provider){
-        let _accounts = await _provider.send('eth_requestAccounts', []);
-        let _balance = await _provider.getBalance(_accounts[0])
+        const _accounts = await _provider.send('eth_requestAccounts', []);
+        const _balance = await _provider.getBalance(_accounts[0])
         setAccount({
           address: _accounts[0],
           balance: _balance.toString()
@@ -42,28 +37,22 @@ const Provider : FC<Props>  = ({ children })=> {
         const signer = await _provider.getSigner(0);
         setSigner(signer);
         setProvider(_provider);
-      //   if(!signer) throw new Error("Unable to get signer");
-      //   const contractInstance = await getContract("0xd9F1297f77a7CCcdd9578d41D09E4E63Ec67badd",lotteryAbi,signer)
-        
-      //   setContract(contractInstance);
       }
       else console.log(provider);
-      } catch(err:any){
+      } catch(err){
         console.log(err);
       }
       
-  }
+  },[provider])
 
-  const getContract = async(address:string, abi:ContractInterface, signer: ethers.Signer) =>{
-    const _contractInstance = new ethers.Contract(address,abi,signer);
+  const getContract = useCallback(async() =>{
+    const _contractInstance = new ethers.Contract("0xB2Ae695aEfca27F10A9A705F4D4Cb531E1125996",lotteryAbi,signer);
     setContract(_contractInstance);
-  }
-
+  },[signer])
 
 
   const getOwner = useCallback(async():Promise<void> => {
-    if(!contract) console.log("Contract is being deployed");
-    else {
+    if(contract) {
       const _owner = await contract.owner();
       setOwner(_owner);
     }
@@ -71,24 +60,64 @@ const Provider : FC<Props>  = ({ children })=> {
   },[contract])
 
   const getLists = useCallback(async():Promise<void> => {
-    if(!contract) console.log("Contract is being deployed");
-    else {
+    if(contract) {
       const _lists = await contract.getList();
       setList(_lists);
     }
     
   },[contract])
 
-  
 
- 
+  const getCurrentWalletConnected = async() => {
+    if(window.ethereum) {
+      try {
+        if(provider){
+          const _accounts = await provider.listAccounts();
+          const _balance = await provider.getBalance(_accounts[0])
+          setAccount({
+            address: _accounts[0],
+            balance: _balance.toString()
+          })
+        }
+         else {
+          console.log("Connect to MetaMask using the Connect Button")
+        }
+        
+      } catch(err: any){
+        setAccount(undefined)
+        console.log(err.message)
+      }
+      
+    }else {
+      setAccount(undefined)
+      console.log("Please Install Metamask")
+    }
+  }
 
-  
+  const addWalletListener = async() => {
+    if(window.ethereum) {
+      if(provider){
+        window.ethereum.on("accountsChanged", (accounts:any)=>{
+          const _balance = provider.getBalance(accounts[0])
+          setAccount({
+            address:accounts[0],
+            balance:_balance.toString()
+          })
+        })
+      }
+      
+    }else {
+      setAccount(undefined)
+      console.log("Please Install Metamask")
+    }
+  }
 
 
   useEffect(()=>{
-    getOwner();
     getLists();
+    getOwner();
+    addWalletListener();
+    getCurrentWalletConnected();
  })
 
   
@@ -105,4 +134,5 @@ const Provider : FC<Props>  = ({ children })=> {
 
 export default Provider;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useWeb3Context = () => useContext(Context);

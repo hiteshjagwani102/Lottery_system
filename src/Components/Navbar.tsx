@@ -3,8 +3,7 @@ import styles from '../styles/navbar.module.scss'
 
 const Navbar = (): JSX.Element => {
 
-    const {connect,owner} = useWeb3Context();
-
+    const {connect,account} = useWeb3Context();
 
     const handleSubmit = async() =>{
         await connect();
@@ -12,11 +11,12 @@ const Navbar = (): JSX.Element => {
 
   return (
     <nav>
-        <div className={styles.div}>
+        <div className={styles.main}>
+
+            {account && <div className={styles.balance}>Balance:{account.balance}</div>}
+            {account && <div className={styles.address}>Address:{account.address}</div>} 
+
             <button className={styles.button} onClick={handleSubmit}>Connect</button>
-            <div>
-                <p className={styles.p}>Owner: {owner}</p>
-            </div>
         </div>
     </nav>
   )

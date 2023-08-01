@@ -1,5 +1,5 @@
 import Navbar from "./Components/Navbar";
-import Home from "./pages/Home/Home";
+import Home from "./Components/Home";
 
 function App(): JSX.Element {
 
