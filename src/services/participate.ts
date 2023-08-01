@@ -7,7 +7,8 @@ const participate = async(contract:ethers.Contract, signer:ethers.Signer):Promis
           });
         await signer.sendTransaction(transaction);
     } catch(err:any){
-        console.log(err.message)
+        if(err?.event==='Error') console.log(err.message);
+        else console.log(err)
     }
 }
 

@@ -1,6 +1,6 @@
 import React, {FC,useEffect,useContext,useState, ReactNode, useCallback } from "react";
 import lotteryAbi from './configs/lotteryAbi.json'
-import {ethers} from 'ethers'
+import {ContractInterface, ethers} from 'ethers'
 import getProvider from "./services/getProvider";
 import getContract from "./services/getContract";
 
@@ -44,10 +44,10 @@ const Provider : FC<Props>  = ({ children })=> {
         const signer = await _provider.getSigner(0);
         setSigner(signer);
         setProvider(_provider);
-        if(!signer) throw new Error("Unable to get signer");
-        const contractInstance = await getContract("0x22C9E120ff6ed49d8798ea9bCF9cf2Caa67FB029",lotteryAbi,signer)
+      //   if(!signer) throw new Error("Unable to get signer");
+      //   const contractInstance = await getContract("0xd9F1297f77a7CCcdd9578d41D09E4E63Ec67badd",lotteryAbi,signer)
         
-        setContract(contractInstance);
+      //   setContract(contractInstance);
       }
       else console.log(provider);
       } catch(err:any){
@@ -55,6 +55,14 @@ const Provider : FC<Props>  = ({ children })=> {
       }
       
   }
+
+  const getContract = async(address:string, abi:ContractInterface, signer: ethers.Signer) =>{
+    const _contractInstance = new ethers.Contract(address,abi,signer);
+    setContract(_contractInstance);
+  }
+
+
+
   const getOwner = useCallback(async():Promise<void> => {
     if(!contract) console.log("Contract is being deployed");
     else {
@@ -89,7 +97,7 @@ const Provider : FC<Props>  = ({ children })=> {
 
   
   return (
-    <Context.Provider value={{getLists,list,getOwner,connect,provider,signer,account,contract,owner}}>
+    <Context.Provider value={{getContract ,getLists,list,getOwner,connect,provider,signer,account,contract,owner}}>
       {children}
     </Context.Provider>
   );
