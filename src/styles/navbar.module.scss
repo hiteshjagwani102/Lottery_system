@@ -1,0 +1,31 @@
+.div {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-around;
+    border-radius: 10px;
+  }
+  
+  .button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+  
+  div {
+    .p {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+  
