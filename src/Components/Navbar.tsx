@@ -13,7 +13,7 @@ const Navbar = (): JSX.Element => {
     <nav>
         <div className={styles.main}>
 
-            {account && <div className={styles.balance}>Balance:{account.balance}</div>}
+            {account && <div className={styles.balance}>Balance:{account.balance*10**-18}</div>}
             {account && <div className={styles.address}>Address:{account.address}</div>} 
 
             <button className={styles.button} onClick={handleSubmit}>Connect</button>

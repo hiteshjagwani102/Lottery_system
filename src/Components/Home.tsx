@@ -5,12 +5,12 @@ import styles from '../styles/home.module.scss'
 
 const Home = (): JSX.Element => {
 
-  const { account, getContract, list, contract, signer, getLists, owner } = useWeb3Context();
+  const { account, list, contract, signer, getLists, owner } = useWeb3Context();
 
 
-  const handleSubmit = async () => {
-    await getContract();
-  }
+  // const handleSubmit = async () => {
+  //   await getContract();
+  // }
 
   const handleRegestration = async () => {
     await participate(contract, signer);
@@ -24,7 +24,7 @@ const Home = (): JSX.Element => {
 
   return (
     <div className={styles.main}>
-      <button className={styles.contractButton} onClick={handleSubmit}>Get Contract</button>
+      {/* <button className={styles.contractButton} onClick={handleSubmit}>Get Contract</button> */}
       <div className={styles.participantList}>
         <p>Participants-</p>
         <ul>
@@ -35,9 +35,8 @@ const Home = (): JSX.Element => {
           }
         </ul>
       </div>
-      {contract && account && owner != account.address && <button className={styles.register} onClick={handleRegestration}>Participate</button>}
-      {contract && account && owner == account.address && <button className={styles.pick} onClick={handleResult}>Pick Lottery</button>}
-
+      {contract && owner.toLowerCase() != account.address.toLowerCase() && <button className={styles.register} onClick={handleRegestration}>Participate</button>}
+      {contract && owner.toLowerCase() == account.address.toLowerCase() && <button className={styles.pick} onClick={handleResult}>Pick Lottery</button>}
 
     </div>
   )
