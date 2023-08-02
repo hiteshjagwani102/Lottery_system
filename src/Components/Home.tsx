@@ -14,17 +14,16 @@ const Home = (): JSX.Element => {
 
   const handleRegestration = async () => {
     await participate(contract, signer);
-    await getLists();
+    await getLists(contract);
   }
 
   const handleResult = async () => {
     await pickLottery(contract);
-    await getLists();
+    await getLists(contract);
   }
 
-  return (
-    <div className={styles.main}>
-      {/* <button className={styles.contractButton} onClick={handleSubmit}>Get Contract</button> */}
+  return (<>
+    {contract && <div className={styles.main}>
       <div className={styles.participantList}>
         <p>Participants-</p>
         <ul>
@@ -35,10 +34,11 @@ const Home = (): JSX.Element => {
           }
         </ul>
       </div>
-      {contract && owner.toLowerCase() != account.address.toLowerCase() && <button className={styles.register} onClick={handleRegestration}>Participate</button>}
-      {contract && owner.toLowerCase() == account.address.toLowerCase() && <button className={styles.pick} onClick={handleResult}>Pick Lottery</button>}
+      {owner.toLowerCase() != account.address.toLowerCase() && <button className={styles.register} onClick={handleRegestration}>Participate</button>}
+      {owner.toLowerCase() == account.address.toLowerCase() && <button className={styles.pick} onClick={handleResult}>Pick Lottery</button>}
 
-    </div>
+    </div>}
+    </>
   )
 }
 

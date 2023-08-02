@@ -16,7 +16,7 @@ const Context = React.createContext<any>(null);
 
 const Provider : FC<Props>  = ({ children })=> {
 
-  const contactAddress = "0x98aE44425906230Ef54C20777bddCbc30a71E154";
+  const contactAddress = "0x22594fBD62F0bF1a9Cb0CDbF78aB99e6C0bbb8Cc";
   const [provider,setProvider] = useState<ethers.providers.Web3Provider | undefined>();
   const[signer,setSigner] = useState<ethers.Signer | undefined>()
   const [account, setAccount] = useState<Account | undefined>();
@@ -43,8 +43,9 @@ const Provider : FC<Props>  = ({ children })=> {
         setContract(contract);
         const owner = await contract.owner();
         setOwner(owner);
-        const list = await contract.getList();
-        setList(list);
+        // const list = await contract.getList();
+        // setList(list);
+        await getLists(contract);
       }
       else console.log(provider);
       } catch(err){
@@ -69,9 +70,9 @@ const Provider : FC<Props>  = ({ children })=> {
     
   // },[contract])
 
-  const getLists = async():Promise<void> => {
-    if(contract) {
-      const list = await contract.getList();
+  const getLists = async(_contract:ethers.Contract):Promise<void> => {
+    if(_contract) {
+      const list = await _contract.getList();
       setList(list);
     }
     else setList([]);
@@ -157,8 +158,9 @@ const Provider : FC<Props>  = ({ children })=> {
             setContract(contract);
             const owner = await contract.owner();
         setOwner(owner);
-        const list = await contract.getList();
-        setList(list);
+        // const list = await contract.getList();
+        // setList(list);
+        await getLists(contract);
           }
           else{
               reset();
@@ -172,7 +174,7 @@ const Provider : FC<Props>  = ({ children })=> {
   }
   addWalletListener();
 
-  });
+  },[account]);
 
 
 
@@ -190,14 +192,16 @@ const Provider : FC<Props>  = ({ children })=> {
               address: _accounts[0],
               balance: _balance.toString()
             })
+            setProvider(provider);
             const signer = provider.getSigner(0);
             const contract =  new ethers.Contract(contactAddress,lotteryAbi,signer);
             await contract.deployed()
             setContract(contract);
             const owner = await contract.owner();
             setOwner(owner);
-            const list = await contract.getList();
-            setList(list);
+            // const list = await contract.getList();
+            // setList(list);
+            await getLists(contract);
             }
             else reset();
           }
@@ -214,7 +218,7 @@ const Provider : FC<Props>  = ({ children })=> {
     }
 
     getCurrentWalletConnected();
-    getLists();
+    if(contract) getLists(contract);
   },[])
 
   
