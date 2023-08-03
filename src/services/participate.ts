@@ -1,19 +1,15 @@
 import { ethers } from "ethers";
 
-const participate = async(contract:ethers.Contract, signer:ethers.Signer):Promise<void> =>{
+const participate = async(contract:ethers.Contract):Promise<void> =>{
     try{
-        const transaction = await contract.enter({
+        await contract.enter({
             value: ethers.utils.parseEther('0.0002'),
             gasLimit: 200000,
-          });
-        await signer.sendTransaction(transaction).then((tx)=>{
-            tx.wait().then(()=>{
-                console.log(tx.hash);
-            })
-        }).catch((error)=>{
-            console.log(error.message);
-        })
-
+          }).then((tx:any) =>{
+             tx.wait().then((recipt:any)=>{
+                console.log(recipt);
+            }). catch((error:any)=>console.log(error));
+          })
     } catch(err:any){
         console.log(err.message);
     }

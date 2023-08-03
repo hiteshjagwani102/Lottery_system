@@ -43,9 +43,6 @@ const Provider : FC<Props>  = ({ children })=> {
         setContract(contract);
         const owner = await contract.owner();
         setOwner(owner);
-        // const list = await contract.getList();
-        // setList(list);
-        await getLists(contract);
       }
       else console.log(provider);
       } catch(err){
@@ -54,82 +51,17 @@ const Provider : FC<Props>  = ({ children })=> {
       
     }
 
-  // const getContract = async() =>{
-  //   const _contractInstance =  new ethers.Contract(contactAddress,lotteryAbi,signer);
-  //   await _contractInstance.deployed()
-  //   setContract(_contractInstance);
-  // };
-
-
-  // const getOwner = useCallback(async():Promise<void> => {
-  //   if(contract) {
-  //     const _owner = await contract.owner();
-  //     setOwner(_owner);
-  //   }
-  //   else setOwner('');
-    
-  // },[contract])
-
   const getLists = async(_contract:ethers.Contract):Promise<void> => {
-    if(_contract) {
-      const list = await _contract.getList();
-      setList(list);
+    try{
+      if(_contract) {
+        const list = await _contract.getList();
+        setList(list);
+      }
+      else setList([]);
+    }catch(error){
+      console.log(error);
     }
-    else setList([]);
   };
-
-  
-
-
-  // const getCurrentWalletConnected = async() => {
-  //   if(window.ethereum) {
-  //     try {
-  //       if(provider){
-  //         const _accounts = await provider.listAccounts();
-
-  //         if(_accounts.length>0){
-  //           const _balance = await provider.getBalance(_accounts[0])
-  //         setAccount({
-  //           address: _accounts[0],
-  //           balance: _balance.toString()
-  //         })
-  //         }
-  //       }
-  //        else {
-  //         console.log("Connect to MetaMask using the Connect Button")
-  //       }
-        
-  //     } catch(err: any){
-  //       setAccount(undefined)
-  //       console.log(err.message)
-  //     }
-      
-  //   }else {
-  //     setAccount(undefined)
-  //     console.log("Please Install Metamask")
-  //   }
-  // }
-
-  // const addWalletListener = async() => {
-  //   if(window.ethereum) {
-  //     if(provider && account){
-  //       window.ethereum.on("accountsChanged", (accounts:any)=>{
-  //         if(accounts.length>0){
-  //           const _balance = provider.getBalance(accounts[0])
-  //         setAccount({
-  //           address:accounts[0],
-  //           balance:_balance.toString()
-  //         })
-  //         }
-  //         else console.log("Please Connect");
-  //       })
-  //     }
-      
-  //   }else {
-  //     setAccount(undefined)
-  //     console.log("Please Install Metamask")
-  //   }
-  // }
 
   const reset = () => {
     setAccount(undefined);
@@ -158,9 +90,6 @@ const Provider : FC<Props>  = ({ children })=> {
             setContract(contract);
             const owner = await contract.owner();
         setOwner(owner);
-        // const list = await contract.getList();
-        // setList(list);
-        await getLists(contract);
           }
           else{
               reset();
@@ -199,9 +128,6 @@ const Provider : FC<Props>  = ({ children })=> {
             setContract(contract);
             const owner = await contract.owner();
             setOwner(owner);
-            // const list = await contract.getList();
-            // setList(list);
-            await getLists(contract);
             }
             else reset();
           }
@@ -218,8 +144,12 @@ const Provider : FC<Props>  = ({ children })=> {
     }
 
     getCurrentWalletConnected();
-    if(contract) getLists(contract);
+    
   },[])
+
+  useEffect(()=>{
+    if(contract) getLists(contract);
+  })
 
   
   return (

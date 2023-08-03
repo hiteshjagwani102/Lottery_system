@@ -5,7 +5,7 @@ import styles from '../styles/home.module.scss'
 
 const Home = (): JSX.Element => {
 
-  const { account, list, contract, signer, getLists, owner } = useWeb3Context();
+  const { account, list, contract, getLists, owner } = useWeb3Context();
 
 
   // const handleSubmit = async () => {
@@ -13,13 +13,16 @@ const Home = (): JSX.Element => {
   // }
 
   const handleRegestration = async () => {
-    await participate(contract, signer);
-    await getLists(contract);
+    await participate(contract).then(async()=>{
+      await getLists(contract);
+    })
+    
   }
 
   const handleResult = async () => {
-    await pickLottery(contract);
-    await getLists(contract);
+    await pickLottery(contract).then(async()=>{
+      await getLists(contract);
+    })
   }
 
   return (<>
